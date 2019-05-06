@@ -13,9 +13,9 @@ class CategoriesView extends Component {
 
 	async componentDidMount() {
 		const res = await request.get("/categories");
-		const categories = res.data;
+    const categories = res.data;
 
-		this.setState({ categories });
+    this.setState({ categories });
 	}
 
 	addToCategories = category =>
