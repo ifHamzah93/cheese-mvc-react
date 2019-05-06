@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
 import request from "../utilities/api-request";
@@ -32,7 +31,7 @@ class CheesesView extends Component {
       return { cheeses: [cheese, ...cheeses]}
     });
 
-  removeFromCheeses = async cheeseID => {
+  deleteCheese = async cheeseID => {
     const res = await request.delete(`/cheeses/${cheeseID}`);
 
     // if the DELETE request was unsuccessful exit early
@@ -49,23 +48,23 @@ class CheesesView extends Component {
 
   getCategoryCheeses = async categoryChangeEvent => {
     // extract the chosen option value from the event object
-    const categoryID = categoryChangeEvent.target.value;
+    const selectedCategoryID = categoryChangeEvent.target.value;
 
     // exit early if the same category ID is chosen
-    if (categoryID === this.state.categoryID) return;
+    if (selectedCategoryID === this.state.selectedCategoryID) return;
 
     // selects the "all cheeses" or "cheeses by category" endpoint depending on the category ID
-    const endpoint = categoryID === "" ? "/cheeses" : `/cheeses/category/${categoryID}`;
+    const endpoint = selectedCategoryID === "" ? "/cheeses" : `/cheeses/category/${selectedCategoryID}`;
 
     const res = await request.get(endpoint);
     const cheeses = res.data;
 
     // updates state with the new categoryID and cheeses list
-    this.setState({ categoryID, cheeses });
+    this.setState({ selectedCategoryID, cheeses });
   };
 
   render() {
-    const { cheeses, categories, categoryID } = this.state;
+    const { cheeses, categories, selectedCategoryID } = this.state;
 
     return (
       <Container>
@@ -82,17 +81,17 @@ class CheesesView extends Component {
           <Col xs={12} md={8} lg={4}>
             <h5>Cheeses by Category</h5>
             <CheeseCategorySelector
-              categories={categories}
-              categoryID={categoryID}
               firstOption="All Cheeses"
+              categories={categories}
+              categoryID={selectedCategoryID}
+              handleChange={this.getCategoryCheeses}
             />
           </Col>
         </Row>
-        <br />
         <CheesesList
           cheeses={cheeses}
-          // only show [remove] button if in 'All' category (categoryID is an empty string)
-          removeCheese={categoryID === "" && this.deleteCheese}
+          // only show [remove] button if in 'All' category (selectedCategoryID is an empty string)
+          removeCheese={selectedCategoryID === "" && this.deleteCheese}
         />
       </Container>
     );
