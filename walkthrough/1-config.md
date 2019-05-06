@@ -245,7 +245,7 @@ Here is the starter code for this section:
 ```js
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import NavBar from "react-bootstrap/NavBar";
+import NavBar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 
 const CheeseNav = () => (
