@@ -6,9 +6,9 @@ const Footer = () => (
   <footer className="fixed-bottom">
     <Row className="text-center">
       <Col xs={12}>
-        Coded by
+        Coded by&nbsp;
         <a href="https://github.com/the-vampiire" target="_blank" rel="noopener noreferrer">
-         Vamp
+        Vamp
         </a>
       </Col>
     </Row>
