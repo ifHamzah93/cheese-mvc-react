@@ -6,7 +6,7 @@ import { LinkContainer } from "react-router-bootstrap";
 const CheeseNav = () => (
   <NavBar>
     <Nav>
-      <LinkContainer to="/">
+      <LinkContainer exact to="/">
         <Nav.Link>Home</Nav.Link>
       </LinkContainer>
 
