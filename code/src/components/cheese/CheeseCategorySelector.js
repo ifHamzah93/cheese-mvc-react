@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import Form from "react-bootstrap/Form";
 
-import { categoryShape } from "../../utilities/prop-types";
+import { categoryType } from "../../utilities/prop-types";
 
 export const createCategoryOption = category => (
 	<option key={category.id} value={category.id}>
@@ -28,7 +28,7 @@ const CheeseCategorySelector = props => {
 
 CheeseCategorySelector.propTypes = {
   handleChange: PropTypes.func.isRequired,
-	categories: PropTypes.arrayOf(categoryShape).isRequired
+	categories: PropTypes.arrayOf(categoryType).isRequired
 };
 
 CheeseCategorySelector.defaultProps = {

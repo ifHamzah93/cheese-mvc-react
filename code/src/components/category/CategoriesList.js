@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 
-import { categoryShape } from "../../utilities/prop-types";
+import { categoryType } from "../../utilities/prop-types";
 
 const createCategoryRow = category => (
 	<tr key={category.id}>
@@ -40,7 +40,7 @@ const CategoriesList = props => {
 };
 
 CategoriesList.propTypes = {
-  categories: PropTypes.arrayOf(categoryShape).isRequired,
+  categories: PropTypes.arrayOf(categoryType).isRequired,
 };
 
 export default CategoriesList;

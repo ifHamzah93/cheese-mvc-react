@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import request from "../../utilities/api-request";
-import { categoryShape } from "../../utilities/prop-types";
+import { categoryType } from "../../utilities/prop-types";
 import CheeseCategorySelector from "./CheeseCategorySelector";
 
 const shouldDisable = fields => {
@@ -137,7 +137,7 @@ class CheeseForm extends Component {
 }
 
 CheeseForm.propTypes = {
-	categories: PropTypes.arrayOf(categoryShape),
+	categories: PropTypes.arrayOf(categoryType),
 };
 
 export default CheeseForm;
