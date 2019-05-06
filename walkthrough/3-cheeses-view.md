@@ -1062,7 +1062,7 @@ const createCheeseRow = (cheese, removeCheese) => (
             <Button
               size='sm'
               variant='outline-danger'
-              onClick={/* give removeCheese the cheese ID */}
+              onClick={/* TODO: give removeCheese the cheese ID */}
             >
               remove
             </Button>
