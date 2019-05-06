@@ -245,14 +245,15 @@ Here is the starter code for this section:
 ```js
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import NavBar from "react-bootstrap/NavBar";
+import NavBar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 
 const CheeseNav = () => (
   <NavBar>
     <Nav>
-      <LinkContainer to="/some/path/to/navigate">
-        <Nav.Link>User Facing Link Text</Nav.Link>
+      {/* exact prop means "exact match" since all other subpaths match "/" */}
+      <LinkContainer exact to="/">
+        <Nav.Link>Home</Nav.Link>
       </LinkContainer>
       {/* TODO: implement the links */}
     </Nav>
@@ -277,7 +278,7 @@ const Footer = () => (
   <footer className="fixed-bottom">
     <Row className="text-center">
       <Col xs={12}>
-        Coded by
+        Coded by&nbsp;
         <a
           target="_blank"
           rel="noopener noreferrer"

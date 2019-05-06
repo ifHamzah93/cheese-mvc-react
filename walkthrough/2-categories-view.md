@@ -39,16 +39,15 @@ Your tasks:
 - create the files listed below (new files have a `*` next to them)
 - copy the starter code to its file
 - import the View components
-- create the Route components for each View
+- implement the Route components for each View
 
 ```sh
 src/
   index.js
   App.js
-* Routes.js
+  Routes.js
   components/
 * views/
-    index.js <--- optional for bundling directory exports
 *   HomeView.js
 *   CheesesView.js
 *   CategoriesView.js
@@ -173,8 +172,8 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 
 import request from "../utilities/api-request";
-import CategoriesList from "../components/Category/CategoriesList";
-import CategoryForm from "../components/Category/CategoryForm";
+import CategoriesList from "../components/category/CategoriesList";
+import CategoryForm from "../components/category/CategoryForm";
 
 class CategoriesView extends Component {
   state = {
@@ -265,12 +264,6 @@ When we are working locally on our machines we can set this variable using a `.e
 
 Since we are developing locally we can set the domain to `localhost` on the port our Cheese API is running on. When we deploy the SPA we can set the value to the live domain of the deployed API. Create this file in the root directory of the application (at the same level as the `src/` directory).
 
-`cheese-react-spa/.env`
-
-```sh
-REACT_APP_API_DOMAIN=http://localhost:8080/
-```
-
 directory structure
 
 ```sh
@@ -284,11 +277,17 @@ cheese-react-spa/
 * .env
 ```
 
-Now we can use `get()`, `post()`, and `delete()` methods on our `request` Axios instance. We have already made use of the `get()` method in the `<CategoriesView>` component. These will make corresponding HTTP requests to our API according to the endpoint and options data we provide when invoking the methods. Let's proceed to the `<CheeseForm>` component where we will make use of the `post()` method to submit the form.
+`cheese-react-spa/.env`
 
-### The `<CheeseForm>` Component
+```sh
+REACT_APP_API_DOMAIN=http://localhost:8080/api
+```
 
-The Cheese Form component is responsible for:
+Now we can use `get()`, `post()`, and `delete()` methods on our `request` Axios instance. We have already made use of the `get()` method in the `<CategoriesView>` component. These will make corresponding HTTP requests to our API according to the endpoint and options data we provide when invoking the methods. Let's proceed to the `<CategoryForm>` component where we will make use of the `post()` method to submit the form.
+
+### The `<CategoryForm>` Component
+
+The Category Form component is responsible for:
 
 - rendering a form with an input for the category name
 - validating the name value provided by the user
@@ -346,7 +345,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 import request from "../../utilities/api-request";
@@ -357,10 +355,10 @@ class CategoryForm extends Component {
   };
 
   handleInputChange = event => {
-    // the name and value attributes of the input that was changed
-    const { name, value } = event.target;
+    // the value attribute of the input that was changed
+    const { value } = event.target;
     // true or false based on whether the value is invalid
-    const disabled = // TODO: implement an expression that will set this value based on the validity of the value
+    const disabled = // TODO: implement an expression that will set disabled based on the validity of the input value
 
     // TODO: update state with the new values of "disabled" and "name"
   };
@@ -371,40 +369,40 @@ class CategoryForm extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { name } = this.state;
-    const { addToCategories } = this.props;
+    const { addCategory } = this.props;
 
     const res = // TODO: send a POST request with the form data (don't forget to await the Promise!)
     const category = res.data;
 
-    // TODO: update state with the new category
-    // TODO: reset the form
+    // TODO: send the new category back to the <CategoriesView> Parent
+    this.resetForm();
   };
 
   render() {
     const { disabled, name } = this.state;
 
     return (
-      <Form>
-        <Form.Row>
-          <Form.Group as={Col}>
+      <Container className="text-center">
+        <h2>Create a Category</h2>
+        <Form>
+          <Form.Group as={Col} sm={{ offset: 4, span: 4 }}>
             <Form.Label>Category Name</Form.Label>
             <Form.Control
               name="name"
-              {/* TODO: implement the remaining props */}
+              // TODO: implement the remaining props
             />
           </Form.Group>
-
-          <Col xs={{ span: 4, offset: 2 }} lg={{ span: 2 }}>
-            <Button
-              type="submit"
-              variant="primary"
-              {/* TODO: implement the remaining props */}
-            >
-              Create
-            </Button>
-          </Col>
-        </Form.Row>
-      </Form>
+          
+          <Button
+            type="submit"
+            variant="primary"
+            // TODO: implement the remaining props
+          >
+            Create
+          </Button>
+        </Form>
+        <hr />
+      </Container>
     );
   }
 }
@@ -574,7 +572,11 @@ const CategoriesList = (props) => {
       <Row>
         <Col xs={12} lg={{ span: 6, offset: 3 }}>
           <Table size='sm' bordered>
-            {/* TODO: implement the header row (use semantic HTML!)*/}
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
             <tbody>
               {/* TODO: implement the body (category name rows) */}
             </tbody>
@@ -641,12 +643,12 @@ Next let's import the shape from this new file and use it in the prop types for 
 
 ```js
 // other imports
-import { categoryShape } from "../../utilities/prop-types";
+import { categoryType } from "../../utilities/prop-types";
 
 // component code
 
 CategoriesList.propTypes = {
-  categories: PropTypes.arrayOf(categoryShape).isRequired,
+  categories: PropTypes.arrayOf(categoryType).isRequired,
 };
 ```
 
@@ -655,18 +657,20 @@ Now how do we define this shape using the Prop Types library? Using the `PropTyp
 `src/utilities/prop-types.js`
 
 ```js
+import PropTypes from 'prop-types';
+
 // defining the base entity shape
 const categoryEntity = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
 };
 
-// a Prop Types definition using the base shape
+// a Prop Types definition using the base entity shape
 // exported as a named export to match how we imported it in CategoriesList.js
-export const categoryShape = PropTypes.shapeOf(categoryEntity);
+export const categoryType = PropTypes.shape(categoryEntity);
 
 // could also be written in one step as
-export const categoryShape = PropTypes.shapeOf({
+export const categoryType = PropTypes.shape({
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
 });
