@@ -9,9 +9,9 @@ The final part of the project is the Menus View. This view will be broken down i
 
 Since the Menu View shows a single menu it is dependent on the Menus View, holding the create menu form, being completed. Let's begin with the Menus View first.
 
-# The `<MenusView>` Component
+## The `<MenusView>` Component
 
-The Menus View component is nearly identical to the Categories View. If you are up for a challenge consider how you could merge these two components into a dynamic component that can create and display menus or categories depending on its props.
+The Menus View and its Child components are nearly identical to the Categories View and its children. If you are up for a challenge consider how you could merge these components into dynamic components that can create and display menus or categories depending on the props they receive. If you are not up for the challenge continue with the steps below!
 
 It is responsible for:
 
@@ -100,7 +100,7 @@ class MenusView extends Component {
   addToMenus = newMenu => {
     // TODO: implement this method
       // it should merge the new menu with the existing menus
-    
+
     // which setState approach should you use?
     // are you using current state to set state?
   };
@@ -132,3 +132,34 @@ class MenusView extends Component {
 
 export default MenusView;
 ```
+
+With the MenusView complete let's consider the dependency chain of the Child components. Just like the `<CategoriesView>`, our `<MenusList>` is dependent on a `<MenuForm>` to have menus to list! Let's begin with the `<MenuForm>`.
+
+### The `<MenuForm>` Component
+
+The Menu Form component is also practically identical to the Categories View. In fact if I were to write out the Component breakdown I would just copy / paste and simply change `category/(ies)` to `menu(s)`! If you feel dirty copy and pasting your code to make just a few name changes consider merging these into dynamic components... 
+
+Your tasks:
+
+There is no starter code for this file. It is identical to the `<CategoriesForm>`. Your tasks are to copy, :( ,  over the `src/components/category/CategoryForm.js` file and refactor it to support the MenuForm use case. Keep note of the changes you will need to make:
+
+- your prop handler has changed
+- the API endpoint you are submitting the form to has changed (see the `0-intro.md` section for the API reference)
+- the title of the form `<h2>Create a {}</h2>` has changed
+
+Couldn't all of these be set as props to make the behavior more dynamic? Even something simple and specific like:
+
+```js
+<NameForm
+  title={entityName}
+  endpoint={entityCreateEndpoint}
+  addEntity={addToEntitiesHandler}
+/>
+```
+
+### The `<MenusList>` Component
+There is no starter code for this file. If you must continue to blaspheme in the name of our DRY Code and Savior you can copy the `<CategoriesForm>` and make changes to:
+
+- `<h2 className='text-center'>Categories</h2>` this line
+- `{categories.map(createCategoryRow)}` this line
+- `createCategoryRow` this name
