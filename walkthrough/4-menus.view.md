@@ -158,8 +158,11 @@ Couldn't all of these be set as props to make the behavior more dynamic? Even so
 ```
 
 ### The `<MenusList>` Component
-There is no starter code for this file. If you must continue to blaspheme in the name of our DRY Code and Savior you can copy the `<CategoriesForm>` and make changes to:
+There is no starter code for this file. If you must continue to blaspheme in the name of our DRY Code and Savior you can copy the `<CategoriesList>` and make changes to:
 
 - `<h2 className='text-center'>Categories</h2>` this line
 - `{categories.map(createCategoryRow)}` this line
 - `createCategoryRow` this name
+
+## The `MenuView` Component
+Ah finally we get to some fresh business. The Menu View will be used to display a single menu and its cheeses. 
