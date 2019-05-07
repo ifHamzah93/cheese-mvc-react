@@ -2,10 +2,17 @@
 
 - [previous: `3-cheeses-view.md`](./3-cheeses-view.md)
 - topics
-  - React Router path parameters
+  - `<Route>` path variables
+  - React Router `<Redirect>`
 - components
+  - `<MenusView>`
+    - `<MenuForm>`
+    - `<MenusList>`
+  - `<MenuView>`
+    - `<Loading>`
+    - `<AddMenuCheeseForm>`
 
-The final part of the project is the Menus View. This view will be broken down into two sections - each with their own sub-components. The Menus View will have a form for creating new menus and a list of menus with links to the individual Menu View. The Menu View will be used to display a single Menu and its cheeses. It will also allow the user to add and remove cheeses from the menu.
+The final parts of the project are the Menus and Menu Views. The Menus View will have a form for creating new menus and a list of menus with links to the individual Menu View. The Menu View will be used to display a single Menu and its cheeses. It will also allow the user to add and remove cheeses from the menu.
 
 Since the Menu View shows a single menu it is dependent on the Menus View, holding the create menu form, being completed. Let's begin with the Menus View first.
 
