@@ -65,7 +65,7 @@ With these requirements in mind lets begin with the **Declaration** step of the 
     - data props
       - `categories` list
     - handler props
-      - `addCheese` to use the `addToCategories` method
+      - `addCheese` to use the `addToCheeses` method
         - will be called when the form is submitted and new cheese is received from the API
   - `<CheeseCategorySelector>`
     - data props
