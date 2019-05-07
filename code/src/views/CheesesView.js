@@ -35,7 +35,7 @@ class CheesesView extends Component {
 		const res = await request.delete(`/cheeses/${cheeseID}`);
 
 		// if the DELETE request was unsuccessful exit early
-		if (res.status !== 204) {
+		if (res.status !== 200) {
 			return;
 		}
 
