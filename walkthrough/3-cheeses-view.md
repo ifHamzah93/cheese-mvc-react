@@ -184,11 +184,13 @@ class CheesesView extends Component {
     return (
       <Container>
         <Row>
-          <CheeseForm
-            {/* TODO: complete the props for this component */}
-          />
-        </Row>
-        <hr />
+					<Col lg={{ span: 8, offset: 2 }}>
+            <CheeseForm
+              // TODO: complete the props
+            />
+					</Col>
+				</Row>
+				<hr />
         <Row className="text-center">
           <Col xs={12} md={8} lg={4}>
             <h5>Cheeses by Category</h5>
@@ -817,14 +819,16 @@ class CheeseForm extends Component {
         </Form.Row>
 
         <Form.Row>
-          <Button
-            type='submit'
-            variant='primary'
-            disabled={disabled}
-            onClick={this.handleSubmit}
-          >
-            Create Cheese
-          </Button>
+          <Col>
+            <Button
+              type='submit'
+              variant='primary'
+              disabled={disabled}
+              onClick={this.handleSubmit}
+            >
+              Create Cheese
+            </Button>
+          </Col>
         </Form.Row>
       </Form>
     );
