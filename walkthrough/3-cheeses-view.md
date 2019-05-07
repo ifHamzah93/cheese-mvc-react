@@ -150,7 +150,7 @@ class CheesesView extends Component {
     const res = // TODO: implement a request to the correct endpoint to delete the cheese (be mindful of the HTTP method you need)
 
     // if the DELETE request was unsuccessful exit early
-    if (res.status !== 204) {
+    if (res.status !== 200) { // <-- normally success DELETE is status 204
       return;
     }
 
