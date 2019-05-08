@@ -4,10 +4,10 @@ Walkthrough for a Cheese MVC React SPA + REST API build and deployment.
 
 ## Walkthrough Order
 
-- [`intro.md`](./0-intro.md): introduction, reference, and background
+- [intro.md](./0-intro.md): introduction, reference, and background
   - Cheese REST API reference
   - background on SPAs, AJAX, and Web APIs
-- [`config.md`](./1-config.md): base configuration of the project
+- [config.md](./1-config.md): base configuration of the project
   - topics
     - Create React App
     - installing dependencies
@@ -15,7 +15,7 @@ Walkthrough for a Cheese MVC React SPA + REST API build and deployment.
   - components
     - `<CheeseNav>`
     - `<Footer>`
-- [`categories-view.md`](./2-categories-view.md): developing the first view for categories
+- [categories-view.md](./2-categories-view.md): developing the first view for categories
   - topics
     - registering React Router routes
     - view and child components
@@ -30,7 +30,7 @@ Walkthrough for a Cheese MVC React SPA + REST API build and deployment.
     - `<CategoriesView>`
     - `<CategoryForm>`
     - `<CategoriesList>`
-- [`cheeses-view.md`](./3-cheeses-view.md): developing the second view for cheeses
+- [cheeses-view.md](./3-cheeses-view.md): developing the second view for cheeses
   - topics
     - conditional expressions in JSX
     - dynamic (multi-use) components
@@ -41,8 +41,41 @@ Walkthrough for a Cheese MVC React SPA + REST API build and deployment.
     - `<CheeseForm>`
     - `<CheeseCategorySelector>`
     - `<CheesesList>`
+- [menus-view.md](./4-menus-view.md): developing the final views for menus
+  - topics
+    - dynamic `<Route>` path variables
+    - conditional rendering
+    - React Router `<Redirect>`
+  - components
+    - `<MenusView>`
+      - `<MenuForm>`
+      - `<MenusList>`
+    - `<MenuView>`
+      - `<Loading>`
+      - `<AddMenuCheeseForm>`
+
+## References
+
+- [Cheese API reference](./api-reference.md): refer to this when implementing API requests
+  - API resource shapes
+  - API endpoints and behaviors
+- [React Component State & Lifecycle](https://reactjs.org/docs/state-and-lifecycle.html)
+- [React Bootstrap](https://react-bootstrap.github.io/components/alerts)
+- [React Router](https://reacttraining.com/react-router/web/guides/quick-start)
+- [Axios AJAX request library](https://www.npmjs.com/package/axios)
 
 # Concepts Covered
+
+## Pre-requisites
+- React minimums
+  - JSX with HTML and React components
+  - component state and basic usage of `setState()`
+- JavaScript minimums
+  - basic ES6 classes and methods
+  - importing and exporting ES6 modules
+  - using Promises with `.then()` and `async/await`)
+  - Array methods `map()` and `filter()`
+  - spreading and destructuring Objects and Arrays
 
 ## Conceptual
 
@@ -58,84 +91,15 @@ Walkthrough for a Cheese MVC React SPA + REST API build and deployment.
 ## Practical
 
 - How to design a site with view components and constituent components
-- How to write stateful and stateless components
-- How to manage the state of a React component
+- How and when to use stateful and stateless components
+- How to manage the state of a stateful component
+- How to manage interactions between Parent and Child components
 - How to add prop-types to components for "type safety" and readability
 - How to perform client-side validation in a React form
 - How to make AJAX requests to a Web API
 - How to manage routing in a SPA using React Router
 - How to deploy a SPA on Netlify
 - How to deploy a Web API on AWS
-
-# API Reference for the Cheese REST API
-
-## Entity reference
-
-```js
-// CheeseEntity
-{
-  id: Number;
-  name: String;
-  description: String;
-  category: CategoryEntity;
-}
-
-// CategoryEntity
-{
-  id: Number;
-  name: String;
-}
-
-// MenuEntity
-{
-  id: Number;
-  name: String;
-}
-```
-
-## Endpoint reference
-
-- Cheese
-  - cheeses collection: `/cheeses/`
-    - `GET`: get all the cheeses
-      - response: `[CheeseEntity]`
-    - `POST`: create a new cheese entity
-      - request data: `{ name: String, description: String, categoryID: Number }`
-      - response: `CheeseEntity`
-  - cheese entity: `/cheeses/:cheeseID`
-    - `GET`: get the cheese details
-      - response: `CheeseEntity`
-    - `DELETE`: delete the cheese
-      - response status: `204`
-  - cheeses collection by category: `/cheeses/category/:categoryID`
-    - `GET`: get all the cheeses for the category
-      - response: `[CheeseEntity]`
-- Category
-  - categories collection: `/categories/`
-    - `GET`: get all the categories
-      - response: `[CategoryEntity]`
-    - `POST`: create a new category entity
-      - request data: `{ name: String }`
-      - response: `CategoryEntity`
-- Menu
-  - menus collection: `/menus/`
-    - `GET`: get all the menus
-      - response: `[MenuEntity]`
-    - `POST`: create a new menu entity
-      - request data: `{ name: String }`
-      - response: `MenuEntity`
-  - menu entity: `/menus/:menuID`
-    - `GET`: get the menu details
-      - response: `MenuEntity`
-  - menu cheeses sub-collection: `/menus/:menuID/cheeses`
-    - `GET`: get all the cheeses in the menu
-      - response: `[CheeseEntity]`
-    - `POST`: add a cheese to the menu
-      - request data: `{ cheeseID }`
-      - response: `CheeseEntity`
-    - `DELETE`: remove a cheese from the menu
-      - request data: `{ cheeseID }`
-      - response status: `204`
 
 # Background
 

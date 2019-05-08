@@ -9,9 +9,9 @@
   - multi-input forms and validation
 - components
   - `<CheesesView>`
-  - `<CheeseForm>`
-  - `<CheeseCategorySelector>`
-  - `<CheesesList>`
+    - `<CheeseForm>`
+    - `<CheesesList>`
+    - `<CheeseCategorySelector>`
 
 Now that we have completed the Categories View it's time to implement the next piece of our dependency chain - the Cheeses View. It will have a form to add a new cheese and a table of cheeses with the ability to view cheeses per category. This is the most complex set of components for this project. The good news is that you will learn a lot implementing it!
 
@@ -65,7 +65,7 @@ With these requirements in mind lets begin with the **Declaration** step of the 
     - data props
       - `categories` list
     - handler props
-      - `addCheese` to use the `addToCategories` method
+      - `addCheese` to use the `addToCheeses` method
         - will be called when the form is submitted and new cheese is received from the API
   - `<CheeseCategorySelector>`
     - data props
@@ -150,7 +150,7 @@ class CheesesView extends Component {
     const res = // TODO: implement a request to the correct endpoint to delete the cheese (be mindful of the HTTP method you need)
 
     // if the DELETE request was unsuccessful exit early
-    if (res.status !== 204) {
+    if (res.status !== 200) { // <-- normally success DELETE is status 204
       return;
     }
 
@@ -184,11 +184,13 @@ class CheesesView extends Component {
     return (
       <Container>
         <Row>
-          <CheeseForm
-            {/* TODO: complete the props for this component */}
-          />
-        </Row>
-        <hr />
+					<Col lg={{ span: 8, offset: 2 }}>
+            <CheeseForm
+              // TODO: complete the props
+            />
+					</Col>
+				</Row>
+				<hr />
         <Row className="text-center">
           <Col xs={12} md={8} lg={4}>
             <h5>Cheeses by Category</h5>
@@ -817,14 +819,16 @@ class CheeseForm extends Component {
         </Form.Row>
 
         <Form.Row>
-          <Button
-            type='submit'
-            variant='primary'
-            disabled={disabled}
-            onClick={this.handleSubmit}
-          >
-            Create Cheese
-          </Button>
+          <Col>
+            <Button
+              type='submit'
+              variant='primary'
+              disabled={disabled}
+              onClick={this.handleSubmit}
+            >
+              Create Cheese
+            </Button>
+          </Col>
         </Form.Row>
       </Form>
     );
@@ -854,7 +858,7 @@ Conditional rendering is an approach used to make React components more dynamic.
 
 One thing you may not have known is what happens when React receives a falsy (`false`, `null`, `undefined`, etc.) value. The falsy value can occur either by directly returning (from the function or `render()` method) but also within a JSX expression block. When React receives a falsy value in either of these locations it thinks of this as a "do not render" instruction.
 
-Let's explore what happens when a JSX expression `{}` block has a falsy value in it. This knowledge is more immediately useful for us right now. Afterwards we can explore conditional rendering from function / `render()` returns.
+Let's explore what happens when a JSX expression `{}` block has a falsy value in it. This knowledge is more immediately useful for us right now. Later, in the Menus View section, we will explore conditional rendering from function / `render()` returns.
 
 ### Conditional JSX Rendering
 
@@ -895,7 +899,7 @@ If the `removeCheese` prop is provided as `false` (from short circuiting in the 
 
 If you are interested in learning about a more advanced topic in conditional Component rendering read the next section. If not scroll past it and get to implementing the `<CheesesList>` with your newfound knowledge!
 
-### Conditional Component Render
+### Conditional Component Rendering
 
 Conditional rendering outside of JSX blocks is a useful pattern to learn in React. With this approach we can make more dynamic components that render according to information from their props or state. We will explore one common scenario with network requests below. Note that this pattern can be applied to any component that should behave dynamically with respect to its rendering behavior.
 
