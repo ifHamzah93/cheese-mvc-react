@@ -184,13 +184,13 @@ class CheesesView extends Component {
     return (
       <Container>
         <Row>
-					<Col lg={{ span: 8, offset: 2 }}>
+          <Col lg={{ span: 8, offset: 2 }}>
             <CheeseForm
               // TODO: complete the props
             />
-					</Col>
-				</Row>
-				<hr />
+          </Col>
+        </Row>
+        <hr />
         <Row className="text-center">
           <Col xs={12} md={8} lg={4}>
             <h5>Cheeses by Category</h5>
