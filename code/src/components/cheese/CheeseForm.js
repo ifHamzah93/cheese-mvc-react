@@ -82,10 +82,7 @@ class CheeseForm extends Component {
 
 		return (
 			<Form className="text-center">
-        {/* <Form.Row className="text-center"> */}
-          <h2>Create a Cheese</h2>
-        {/* </Form.Row> */}
-
+        <h2>Create a Cheese</h2>
 				<Form.Row>
 					<Form.Group as={Col}>
 						<Form.Label>Cheese Name</Form.Label>
@@ -111,7 +108,6 @@ class CheeseForm extends Component {
 					<Form.Group as={Col}>
 						<Form.Label>Cheese Description</Form.Label>
 						<Form.Control
-							required
 							name="description"
 							value={description}
 							onChange={this.handleInputChange}
