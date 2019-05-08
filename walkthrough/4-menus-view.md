@@ -88,7 +88,6 @@ src/
 import React, { Component } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
 import request from "../utilities/api-request";
@@ -114,7 +113,7 @@ class MenusView extends Component {
   };
 
   render() {
-    const { menus, showForm } = this.state;
+    const { menus } = this.state;
 
     return (
       <Container>
@@ -171,7 +170,25 @@ There is no starter code for this file. If you must continue to blaspheme in the
 
 - `<h2 className='text-center'>Categories</h2>` this line
 - `{categories.map(createCategoryRow)}` this line
-- `createCategoryRow` this name
+- `createCategoryRow` this name\*
+- import the `menuType` to use in the `<MenusList>` prop types
+
+Okay jokes aside there is one important change you do have to make here. We want to wrap each of our menu names in a link that sends them to the corresponding `<MenuView>` using the menu's ID property. You will need to modify the `createMenuRow` utility function to use a React Router `<Link>` component. Don't forget to import the component from `react-router`.
+
+```js
+...
+import { Link } from 'react-router-dom';
+...
+
+const createMenuRow = menu => (
+  <tr key={menu.id}>
+    <td>
+      <Link to={`/menus/${menu.id}`}>{menu.name}</Link>
+    </td>
+  </tr>
+);
+...
+```
 
 ## The `MenuView` Component
 
@@ -196,9 +213,9 @@ In React Router we have set up our `<Route>` components to use the `path=""` pro
 <Route path="/path/:subPathVariable" component={ComponentName} />
 ```
 
-This would correspond to the url path `/path/something` where the value of the `subPathVariable` would be `something`.
+This would correspond to the url path `/path/something` where the value of the `subPathVariable` would be `"something"`.
 
-In our case we want to add a subpath to `/menus/` that corresponds to a path variable called `menuID`.
+In our case we want to add a subpath to `/menus/` that corresponds to a path variable called `menuID`. So we can link to an individual menu with a path of `/menus/5` corresponding to the menu with an ID of `5`.
 
 Your tasks:
 
@@ -313,13 +330,13 @@ Why are there three rendering sections above? Because this component needs to us
 
 We can't provide initial state for `menu` because it is a complex object whos properties are depended on for rendering. Since the initial value for `menu` is `null` then any of our child components will break when trying to access properties like `name` or `cheeses`. Until our API response is received `menu` will remain `null`.
 
-We have a compounded issue in that someone may attempt to navigate to the page from a url like `/menus/50000` which of course does not correspond to a real menu. In this case the API response will be `undefined`.
+We have a compounded issue in that someone may attempt to navigate to the page from a url like `/menus/50000` which of course does not correspond to a real menu. In this case the API response will be an empty string `""`.
 
 So how can we solve these issues?
 
-We will render a `<Loading>` component while the network while waiting for the API response rather than rendering our child components. When the response is received back it will either be `undefined`, implying no match for the `menuID` was found, or it will be a `menu` object that will allow us to render our child components.
+We will render a `<Loading>` component while the network while waiting for the API response rather than rendering our child components. When the response is received back it will either be `""`, implying no match for the `menuID` was found, or it will be a `menu` object that will allow us to render our child components.
 
-If we receive no `menu` data in our response, `menu = undefined`, then we should redirect the user to our `<MenusView>`. If the user navigated here by mistake they will be brought back to a usable view. If they were trying to be tricksy hobitses then they can be redirected indefinitely until they give up.
+If we receive no `menu` data in our response, `menu = ""`, then we should redirect the user to our `<MenusView>`. If the user navigated here by mistake they will be brought back to a usable view. If they were trying to be tricksy hobitses then they can be redirected indefinitely until they give up.
 
 We can accomplish this redirect using a special React Router component called `<Redirect>`. The Redirect component behaves as you expect - you tell it where to redirect in its `to` prop and it will do so without breaking our SPA behavior. You can read more about the Redirect component and the additional behaviors it supports [here](https://reacttraining.com/react-router/web/api/Redirect).
 
@@ -366,7 +383,7 @@ import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
 const Loading = () => (
-  <div style={{ margin: "0 auto" }}>
+  <div style={{ marginLeft: "50px" }}>
     <Spinner animation="grow" variant="primary" />
     <Spinner animation="grow" variant="secondary" />
     <Spinner animation="grow" variant="success" />
@@ -394,7 +411,7 @@ import Loading from "../components/Loading";
 import CheesesList from "../components/cheese/CheesesList";
 import AddMenuCheeseForm from "../components/menu/AddMenuCheeseForm";
 
-class MenusView extends Component {
+class MenuView extends Component {
   state = {
     menu: null,
   };
@@ -406,36 +423,38 @@ class MenusView extends Component {
     // TODO: request the menu for the given menuID
     // check the API reference for the correct endpoint to use
     const res = await request.get();
-    const menu = res.data; // if no menu is found will be "undefined"
+    const menu = res.data; // if no menu is found will be an empty string ""
 
     this.setState({ menu });
   }
 
   addToCheeses = cheese =>
     this.setState(state => {
-      const { cheeses } = state.menu;
-
-      return { menu: { cheeses: [cheese, ...cheeses] } };
+      const { menu } = state;
+      const cheeses = [cheese, ...cheeses];
+      // update state by merging the menu data with a new merged cheeses property
+      return { menu: { ...menu, cheeses } };
     });
 
   removeFromCheeses = cheeseID =>
     this.setState(state => {
-      const { cheeses } = state.menu;
+      const { menu } = state;
 
       // TODO: provide the filter() callback
       // should return true for any cheese whos ID DOES NOT match the cheeseID
-      const updatedCheeses = cheeses.filter();
+      const cheeses = cheeses.filter();
 
-      return { menu: { cheeses: updatedCheeses } };
+      return { menu: { ...menu, cheeses } };
     });
 
   deleteCheese = async cheeseID => {
+    const { menu } = this.state;
     // TODO: make an API request to remove the cheese from the menu
     // check the API reference for the correct endpoint
     const res = await request.delete();
 
     // if the request failed exit early
-    if (res.status !== 200) {
+    if (res.status !== 201) {
       return;
     }
 
@@ -448,28 +467,44 @@ class MenusView extends Component {
     // if menu is our initial value, null, we are still loading
     if (menu === null) return <Loading />;
 
-    // if the response did not find a menu with the given ID it will be "undefined"
+    // if the response did not find a menu with the given ID it will be an empty string ""
     // redirect to the MenusView at /menus
-    if (menu === undefined) return <Redirect to="/menus" />
+    if (menu === "") return <Redirect to="/menus" />
 
     // otherwise we render our MenuView
     return (
       <Container>
-        <h2>{menu.name}</h2>
+        <h2 className="text-center">{menu.name}</h2>
         <Row>
-          <AddMenuCheeseForm
-            {/* TODO: complete the props */}
-          />
+          <Col>
+            <AddMenuCheeseForm
+              {/* TODO: complete the props */}
+            />
+          </Col>
         </Row>
+        <hr />
         <Row>
-          <CheesesList
-            {/* TODO: complete the props */}
-          />
+          <Col>
+            <CheesesList
+              {/* TODO: complete the props */}
+            />
+          </Col>
         </Row>
       </Container>
     );
   }
 }
+
+// this defines the menuID nested prop type from the match object
+MenuView.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      menuID: PropTypes.string.isRequired,
+    }),
+  }),
+};
+
+export default MenuView;
 ```
 
 We've almost made it! Our final component will be the cherry on top of our...Cheese cake. I'm sorry.
@@ -520,6 +555,7 @@ Since this component is a form that handles API submission it needs to be a stat
     - the `value` should be the `cheese` `id` property
     - the user facing text in the option should be the `cheese` `name` property
 - rendering ( )
+  - `<Container>` grid for positioning
   - `<Form>` to hold the inputs
   - `<select>` to display the available options
     - attribute props
@@ -542,6 +578,7 @@ Since this component is a form that handles API submission it needs to be a stat
 ```js
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -557,7 +594,7 @@ const filterAvailableCheeses = (currentCheeses, allCheeses) =>
         currentCheese => currentCheese.id === availableCheese.id,
       ),
   );
-  
+
 const createCheeseOption = cheese => (
   // TODO: complete this utility function
 );
@@ -622,9 +659,9 @@ class AddMenuCheeseForm extends Component {
     // condition && ( );
 
     return (
-      <Form>
-        <Form.Row>
-          <Form.Group as={Col}>
+      <Container className="text-center">
+        <Form>
+          <Form.Group as={Col} sm={{ offset: 4, span: 4 }}>
             <Form.Control
               as="select"
               name="cheeseID"
@@ -633,18 +670,17 @@ class AddMenuCheeseForm extends Component {
               <option value="">Select a Cheese</option>
               {/* TODO: transform availableCheeses into option elements */}
             </Form.Control>
-
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={cheeseID === ""}
-              onClick={this.handleSubmit}
-            >
-              Add Cheese
-            </Button>
           </Form.Group>
-        </Form.Row>
-      </Form>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={cheeseID === ""}
+            onClick={this.handleSubmit}
+          >
+            Add Cheese
+          </Button>
+        </Form>
+      </Container>
     );
   }
 }
@@ -675,8 +711,7 @@ const filterImperative = (currentCheeses, allCheeses) => {
 
   // loop over the available cheeses
   for (const availableCheese of allCheeses) {
-
-// this is what some() is doing during each iteration
+    // this is what some() is doing during each iteration
     // use a flag to determine if the available cheese is unique
     let isInCurrentCheeses = false;
 
@@ -688,7 +723,7 @@ const filterImperative = (currentCheeses, allCheeses) => {
       }
     }
 
-// this is what filter() is doing during each iteration
+    // this is what filter() is doing during each iteration
     // if it is NOT in the current cheeses it is unique
     if (!isInCurrentCheeses) {
       uniqueCheeses.push(availableCheese);
@@ -704,6 +739,7 @@ You may be wondering why we do not create `availableCheeses` in our `componentDi
 Instead we derive its value in the `render` method where our props are guaranteed to be current. Why are they guaranteed? Because when a component receives new props it will cause it to re-render (unless you use [another lifecycle hook method]() to change this behavior). So when we receive new props we derive the latest list of `availableCheeses` and ensure our options are always unique.
 
 # YOU MADE IT
+
 That's it. It's all over. Time to run your SPA and make sure everything works well. If you haven't designed a `<HomeView>` component now is a good time to do so. You can put anything you want there but if you need an idea what about describing the project, what it does, linking to the repo, and some topics you learned while creating it?
 
 Ok, I lied. We still have to deploy our project. Luckily this is a dead simple process using [Netlify](https://www.netlify.com/). Head over to [5-deployment.md](./5-deployment.md) to see your shiny new project live on the web in just a few minutes!
