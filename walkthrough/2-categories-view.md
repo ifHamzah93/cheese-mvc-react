@@ -15,8 +15,8 @@
 - components
   - View `<Route>` components
   - `<CategoriesView>`
-  - `<CategoryForm>`
-  - `<CategoriesList>`
+    - `<CategoryForm>`
+    - `<CategoriesList>`
 
 # Views & Components: Part One
 

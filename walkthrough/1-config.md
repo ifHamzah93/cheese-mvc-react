@@ -15,10 +15,10 @@
   - `<Footer>`
 
 ## Shortcut
-Depending on how much time is available to complete this project you can take a shortcut through the config process by cloning this repo and using the starter code in the `code/` directory. 
+Depending on how much time is available to complete this project you can take a shortcut through the config process by forking this repo and using the starter code in the `code/` directory. 
 
 ```sh
-git clone https://github.com/the-vampiire/cheese-mvc-react
+git clone https://github.com/<your-username>/cheese-mvc-react
 ```
 
 This will provide starter code up to the Navigation and Footer section. Explore the starter code files. If the code is clear to you then you can skip to [Navigation and Footer](#Navigation-and-Footer). Otherwise read through starting at the following section.
