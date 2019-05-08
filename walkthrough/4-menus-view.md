@@ -330,7 +330,7 @@ Why are there three rendering sections above? Because this component needs to us
 
 We can't provide initial state for `menu` because it is a complex object whos properties are depended on for rendering. Since the initial value for `menu` is `null` then any of our child components will break when trying to access properties like `name` or `cheeses`. Until our API response is received `menu` will remain `null`.
 
-We have a compounded issue in that someone may attempt to navigate to the page from a url like `/menus/50000` which of course does not correspond to a real menu. In this case the API response will be an empty string `""`.
+We have a compounded issue in that someone may attempt to navigate to the page from a url like `/menus/50000` which of course does not correspond to a real menu. In this case the API response will be an empty string `""`. Note this is an atypical REST API response. Normally we would expect a `404` status code when a resource is not found. 
 
 So how can we solve these issues?
 
@@ -537,7 +537,7 @@ Since this component is a form that handles API submission it needs to be a stat
     - prevents the user from adding duplicates
     - provides a better user experience so they can find new cheeses to add without scrolling through ones the menu already has
 - methods
-  - `resetForm`: resets the form to initial (empty) state
+  - `resetForm`: resets the the`cheeseID` field to an empty string
   - `componentDidMount`: where we will make an API request
     - requests all the cheeses
     - updates state with the list of cheeses
@@ -599,14 +599,13 @@ const createCheeseOption = cheese => (
   // TODO: complete this utility function
 );
 
-const initialState = {
-  // TODO: implement initial state
-};
-
 class AddMenuCheeseForm extends Component {
-  state = initialState;
+  state =  {
+    // TODO: implement initial state
+  }
 
-  resetForm = () => this.setState(initialState);
+  // TODO: reset the cheeseID value
+  resetForm = () => {}
 
   async componentDidMount() {
     // get the full list of cheeses
@@ -617,8 +616,7 @@ class AddMenuCheeseForm extends Component {
   }
 
   handleInputChange = event => {
-    const { value } = event.target;
-    this.setState({ cheeseID: value });
+    // TODO: update state when the select input changes
   };
 
   handleSubmit = async event => {
