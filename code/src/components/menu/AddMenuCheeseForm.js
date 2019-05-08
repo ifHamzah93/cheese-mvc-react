@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -73,11 +74,12 @@ class AddMenuCheeseForm extends Component {
 		const { currentCheeses } = this.props;
 		const { cheeseID, allCheeses } = this.state;
 
-		const availableCheeses = filterAvailableCheeses(currentCheeses, allCheeses);console.log({ allCheeses, currentCheeses, availableCheeses })
+		const availableCheeses = filterAvailableCheeses(currentCheeses, allCheeses);
+		console.log({ allCheeses, currentCheeses, availableCheeses });
 		return (
 			availableCheeses.length !== 0 && (
-				<Form>
-					<Form.Row>
+				<Container className="text-center">
+					<Form>
 						<Form.Group as={Col} sm={{ offset: 4, span: 4 }}>
 							<Form.Control
 								as="select"
@@ -89,20 +91,16 @@ class AddMenuCheeseForm extends Component {
 								{availableCheeses.map(createCheeseOption)}
 							</Form.Control>
 						</Form.Group>
-					</Form.Row>
-          <Form.Row>
-            <Form.Group as={Col} sm={{ offset: 4, span: 4 }}>
-            <Button
-								type="submit"
-								variant="primary"
-								disabled={cheeseID === ""}
-								onClick={this.handleSubmit}
-							>
-								Add Cheese
-							</Button>
-            </Form.Group>
-          </Form.Row>
-				</Form>
+						<Button
+							type="submit"
+							variant="primary"
+							disabled={cheeseID === ""}
+							onClick={this.handleSubmit}
+						>
+							Add Cheese
+						</Button>
+					</Form>
+				</Container>
 			)
 		);
 	}
