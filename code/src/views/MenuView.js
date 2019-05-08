@@ -24,7 +24,7 @@ class MenuView extends Component {
 		const res = await request.get(`/menus/${menuID}`);
 		const menu = res.data; // if no menu is found will be an empty string ""
 
-    this.setState({ menu });
+		this.setState({ menu });
 	}
 
 	addToCheeses = cheese =>
