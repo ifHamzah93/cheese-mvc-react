@@ -810,10 +810,8 @@ class CheeseForm extends Component {
           <Form.Group as={Col}>
             <Form.Label>Cheese Description</Form.Label>
             <Form.Control
-              required
               name='description'
-              value={description}
-              onChange={this.handleInputChange}
+              // TODO: complete the props for this component
             />
           </Form.Group>
         </Form.Row>
@@ -823,8 +821,7 @@ class CheeseForm extends Component {
             <Button
               type='submit'
               variant='primary'
-              disabled={disabled}
-              onClick={this.handleSubmit}
+              // TODO: complete the props for this component
             >
               Create Cheese
             </Button>
