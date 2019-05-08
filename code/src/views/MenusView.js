@@ -25,7 +25,7 @@ class MenusView extends Component {
 		});
 
 	render() {
-		const { menus, showForm } = this.state;
+		const { menus } = this.state;
 
 		return (
 			<Container>
