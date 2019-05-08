@@ -159,9 +159,9 @@ Couldn't all of these be set as props to make the behavior more dynamic? Even so
 
 ```js
 <NameForm
-	title={entityName}
-	endpoint={entityCreateEndpoint}
-	addEntity={addToEntitiesHandler}
+  title={entityName}
+  endpoint={entityCreateEndpoint}
+  addEntity={addToEntitiesHandler}
 />
 ```
 
@@ -242,12 +242,12 @@ For our purposes we will focus on the `match` prop. This prop gives us details a
 
 ```js
 const SomeComponent = props => {
-	const { pathVariableName } = props.match.params;
+  const { pathVariableName } = props.match.params;
 
-	// or if destructuring still confuses you
-	const pathVariableName = props.match.params.pathVariableName;
+  // or if destructuring still confuses you
+  const pathVariableName = props.match.params.pathVariableName;
 
-	// use the path variable value for controlling your component behavior
+  // use the path variable value for controlling your component behavior
 };
 ```
 
@@ -366,15 +366,15 @@ import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
 const Loading = () => (
-	<div style={{ margin: "0 auto" }}>
-		<Spinner animation="grow" variant="primary" />
-		<Spinner animation="grow" variant="secondary" />
-		<Spinner animation="grow" variant="success" />
-		<Spinner animation="grow" variant="danger" />
-		<Spinner animation="grow" variant="warning" />
-		<Spinner animation="grow" variant="info" />
-		<Spinner animation="grow" variant="dark" />
-	</div>
+  <div style={{ margin: "0 auto" }}>
+    <Spinner animation="grow" variant="primary" />
+    <Spinner animation="grow" variant="secondary" />
+    <Spinner animation="grow" variant="success" />
+    <Spinner animation="grow" variant="danger" />
+    <Spinner animation="grow" variant="warning" />
+    <Spinner animation="grow" variant="info" />
+    <Spinner animation="grow" variant="dark" />
+  </div>
 );
 
 export default Loading;
@@ -551,11 +551,11 @@ import { cheeseType } from "../../utilities/prop-types";
 
 // if your face melted trying to understand this look below!
 const filterAvailableCheeses = (currentCheeses, allCheeses) =>
-	allCheeses.filter(
-		availableCheese =>
-			!currentCheeses.some(
-				currentCheese => currentCheese.id === availableCheese.id,
-			),
+  allCheeses.filter(
+    availableCheese =>
+      !currentCheeses.some(
+        currentCheese => currentCheese.id === availableCheese.id,
+      ),
   );
   
 const createCheeseOption = cheese => (
@@ -563,62 +563,62 @@ const createCheeseOption = cheese => (
 );
 
 const initialState = {
-	// TODO: implement initial state
+  // TODO: implement initial state
 };
 
 class AddMenuCheeseForm extends Component {
-	state = initialState;
+  state = initialState;
 
-	resetForm = () => this.setState(initialState);
+  resetForm = () => this.setState(initialState);
 
-	async componentDidMount() {
+  async componentDidMount() {
     // get the full list of cheeses
-		const res = await request.get("/cheeses");
-		const allCheeses = res.data;
+    const res = await request.get("/cheeses");
+    const allCheeses = res.data;
 
-		this.setState({ allCheeses });
-	}
+    this.setState({ allCheeses });
+  }
 
-	handleInputChange = event => {
-		const { value } = event.target;
-		this.setState({ cheeseID: value });
-	};
+  handleInputChange = event => {
+    const { value } = event.target;
+    this.setState({ cheeseID: value });
+  };
 
-	handleSubmit = async event => {
-		event.preventDefault();
-		const { menuID, addCheese } = this.props;
-		const { allCheeses, cheeseID } = this.state;
+  handleSubmit = async event => {
+    event.preventDefault();
+    const { menuID, addCheese } = this.props;
+    const { allCheeses, cheeseID } = this.state;
 
-		// TODO: make an API request using the correct endpoint and data
-		// check the API reference to see how to add a cheese to a menu
-		const res = await request.post();
+    // TODO: make an API request using the correct endpoint and data
+    // check the API reference to see how to add a cheese to a menu
+    const res = await request.post();
 
-		// if the request failed exit early
-		if (res.status !== 201) {
-			return;
-		}
+    // if the request failed exit early
+    if (res.status !== 201) {
+      return;
+    }
 
-		// finds the cheese using its ID
-		// Number(cheeseID) is to ensure the form's string cheeseID is comparable to the number cheese.id
-		const cheese = allCheeses.find(cheese => cheese.id === Number(cheeseID));
+    // finds the cheese using its ID
+    // Number(cheeseID) is to ensure the form's string cheeseID is comparable to the number cheese.id
+    const cheese = allCheeses.find(cheese => cheese.id === Number(cheeseID));
 
-		// TODO: give the cheese to the MenuView Parent component
-		// TODO: reset the form
-	};
+    // TODO: give the cheese to the MenuView Parent component
+    // TODO: reset the form
+  };
 
-	render() {
-		const { currentCheeses } = this.props;
-		const { cheeseID, allCheeses } = this.state;
+  render() {
+    const { currentCheeses } = this.props;
+    const { cheeseID, allCheeses } = this.state;
 
-		const availableCheeses = []; // TODO: derive the available cheeses with the utility function
+    const availableCheeses = []; // TODO: derive the available cheeses with the utility function
 
-		// TODO: complete the if statement
-		// render null if the available cheeses list is empty
-		if () {
-			return null;
-		}
+    // TODO: complete the if statement
+    // render null if the available cheeses list is empty
+    if () {
+      return null;
+    }
 
-		// can you rewrite this if / return section using the short circuit expression?
+    // can you rewrite this if / return section using the short circuit expression?
     // condition && ( );
 
     return (
@@ -646,11 +646,11 @@ class AddMenuCheeseForm extends Component {
         </Form.Row>
       </Form>
     );
-	}
+  }
 }
 
 AddMenuCheeseForm.propTypes = {
-	// TODO: complete the prop types
+  // TODO: complete the prop types
 };
 
 export default AddMenuCheeseForm;
@@ -671,31 +671,31 @@ It is always easiest to wrap your head around declarative approaches by seeing t
 ```js
 const filterImperative = (currentCheeses, allCheeses) => {
   // build up the list of unique cheeses to be returned at the end of the function
-	const uniqueCheeses = [];
+  const uniqueCheeses = [];
 
   // loop over the available cheeses
-	for (const availableCheese of allCheeses) {
+  for (const availableCheese of allCheeses) {
 
 // this is what some() is doing during each iteration
     // use a flag to determine if the available cheese is unique
-		let isInCurrentCheeses = false;
+    let isInCurrentCheeses = false;
 
-		// check the current cheeses to see if the available cheese is already in this list
-		for (const currentCheese of currentCheeses) {
-			// if the available cheese ID matches the current cheese then set the flag true, it is not unique
-			if (availableCheese.id === currentCheese.id) {
-				isInCurrentCheeses = true;
-			}
-		}
+    // check the current cheeses to see if the available cheese is already in this list
+    for (const currentCheese of currentCheeses) {
+      // if the available cheese ID matches the current cheese then set the flag true, it is not unique
+      if (availableCheese.id === currentCheese.id) {
+        isInCurrentCheeses = true;
+      }
+    }
 
 // this is what filter() is doing during each iteration
     // if it is NOT in the current cheeses it is unique
-		if (!isInCurrentCheeses) {
-			uniqueCheeses.push(availableCheese);
-		}
-	}
+    if (!isInCurrentCheeses) {
+      uniqueCheeses.push(availableCheese);
+    }
+  }
 
-	return uniqueCheeses;
+  return uniqueCheeses;
 };
 ```
 
