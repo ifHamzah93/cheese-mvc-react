@@ -894,7 +894,7 @@ So how will this JSX expression block be evaluated? If the `removeCheese` handle
 
 If the `removeCheese` prop is provided as `false` (from short circuiting in the conditional prop expression of the Parent) then the JSX expression block will also short circuit. This means the expression will return `false` (the value of `removeCheese`). React will see `{false}` in the JSX and determine that this block should not be rendered.
 
-If you are interested in learning about a more advanced topic in conditional Component rendering read the next section. If not scroll past it and get to implementing the `<CheesesList>` with your newfound knowledge!
+If you are interested in learning about a more advanced topic in conditional Component rendering read the next section. If not scroll past it and [get to implementing](#Implementation) the `<CheesesList>` with your newfound knowledge!
 
 ### Conditional Component Rendering
 
