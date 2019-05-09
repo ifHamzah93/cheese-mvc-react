@@ -144,7 +144,7 @@ With the MenusView complete let's consider the dependency chain of the Child com
 
 ### The `<MenuForm>` Component
 
-The Menu Form component is also practically identical to the Categories View. In fact if I were to write out the Component breakdown I would just copy / paste and simply change `category/(ies)` to `menu(s)`! If you feel dirty copy and pasting your code to make just a few name changes consider merging these into dynamic components...
+The Menu Form component is also practically identical to the Categories Form. In fact if I were to write out the Component breakdown I would just copy / paste and simply change `category/(ies)` to `menu(s)`! If you feel dirty copy and pasting your code to make just a few name changes consider merging these into dynamic components...
 
 Your tasks:
 
