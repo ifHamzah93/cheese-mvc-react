@@ -15,8 +15,8 @@
 - components
   - View `<Route>` components
   - `<CategoriesView>`
-  - `<CategoryForm>`
-  - `<CategoriesList>`
+    - `<CategoryForm>`
+    - `<CategoriesList>`
 
 # Views & Components: Part One
 
@@ -338,11 +338,12 @@ Your tasks:
 - copy the starter code to the file
 - complete the TODOs
 
-`src/components/Category/CategoryForm.js`
+`src/components/category/CategoryForm.js`
 
 ```js
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -544,7 +545,7 @@ Your tasks:
 - copy the starter code to the file
 - complete the TODOs
 
-`src/components/Category/CategoriesList.js`
+`src/components/category/CategoriesList.js`
 
 ```js
 import React from 'react';
@@ -639,7 +640,7 @@ src/
 
 Next let's import the shape from this new file and use it in the prop types for the Category List component. The file is empty for now but we can shell out its usage before implementing it.
 
-`src/components/Category/CategoriesList.js
+`src/components/category/CategoriesList.js
 
 ```js
 // other imports

@@ -9,9 +9,9 @@
   - multi-input forms and validation
 - components
   - `<CheesesView>`
-  - `<CheeseForm>`
-  - `<CheeseCategorySelector>`
-  - `<CheesesList>`
+    - `<CheeseForm>`
+    - `<CheesesList>`
+    - `<CheeseCategorySelector>`
 
 Now that we have completed the Categories View it's time to implement the next piece of our dependency chain - the Cheeses View. It will have a form to add a new cheese and a table of cheeses with the ability to view cheeses per category. This is the most complex set of components for this project. The good news is that you will learn a lot implementing it!
 
@@ -65,7 +65,7 @@ With these requirements in mind lets begin with the **Declaration** step of the 
     - data props
       - `categories` list
     - handler props
-      - `addCheese` to use the `addToCategories` method
+      - `addCheese` to use the `addToCheeses` method
         - will be called when the form is submitted and new cheese is received from the API
   - `<CheeseCategorySelector>`
     - data props
@@ -150,7 +150,7 @@ class CheesesView extends Component {
     const res = // TODO: implement a request to the correct endpoint to delete the cheese (be mindful of the HTTP method you need)
 
     // if the DELETE request was unsuccessful exit early
-    if (res.status !== 204) {
+    if (res.status !== 200) { // <-- normally success DELETE is status 204
       return;
     }
 
@@ -184,9 +184,11 @@ class CheesesView extends Component {
     return (
       <Container>
         <Row>
-          <CheeseForm
-            {/* TODO: complete the props for this component */}
-          />
+          <Col lg={{ span: 8, offset: 2 }}>
+            <CheeseForm
+              // TODO: complete the props
+            />
+          </Col>
         </Row>
         <hr />
         <Row className="text-center">
@@ -280,6 +282,32 @@ selectedCategoryID === "" && "the handler method was provided";
 // categoryID is not an empty string: returns false
 // categoryID is an empty string: returns 'the handler method was provided'
 ```
+
+Another very common use of the short circuit evaluation is for safe access for nested object properties. Say you have an object that you expect to look like this:
+
+```js
+const cheese = {
+	id: 1,
+	name: "cheese",
+	description: "cheesy",
+	category: {
+		id: 1,
+		name: "cheesey category",
+	},
+};
+```
+
+In your code you want to use the `cheese.category.id` nested property. If the `category` object property is defined then all will go well. But what if it isn't? What if it is `null` or `undefined`? Then attempting to access `cheese.category.id` is like trying to access `null.id` or `undefined.id`. This will throw an Error!
+
+To prevent this issue you can safely access nested properties using the short circuit:
+
+```js
+{
+	cheese.category && cheese.category.id;
+}
+```
+
+This expression will "short circuit" if `cheese.category` is `undefined` or `null` rather than breaking. And if it is defined (not a falsy value) then it will "complete the circuit" and return the nested `id` property as expected.
 
 ## Child Component Dependencies
 
@@ -476,13 +504,13 @@ However, if you are using data from the current state when setting a new state y
 
 ```js
 this.setState((currentState, currentProps) => {
-  // derive new state using currentState / currentProps
-  // return an object with the updated state
+	// derive new state using currentState / currentProps
+	// return an object with the updated state
 });
 
 // most of the time you just need current state
 this.setState(currentState => {
-  // derive and return new state
+	// derive and return new state
 });
 ```
 
@@ -491,22 +519,22 @@ The reason for this is that component state is set asychronously. React's uses a
 ```js
 // DON'T DO THIS!
 updateUsingState = () => {
-  // using the current value from state outside of this.setState()
+	// using the current value from state outside of this.setState()
 
-  // using "fieldName" with some other data to derive new state
-  const fieldName = this.state.fieldName + otherData;
+	// using "fieldName" with some other data to derive new state
+	const fieldName = this.state.fieldName + otherData;
 
-  // this.state may be different by the time setState is processed
-  this.setState({ fieldName });
+	// this.state may be different by the time setState is processed
+	this.setState({ fieldName });
 };
 
 // DO THIS INSTEAD
 updateUsingState = () => {
-  this.setState(currentState => {
-    // currentState will be the correct (current) state relative to this update
-    const fieldName = currentState + otherData;
-    return { fieldName };
-  });
+	this.setState(currentState => {
+		// currentState will be the correct (current) state relative to this update
+		const fieldName = currentState + otherData;
+		return { fieldName };
+	});
 };
 ```
 
@@ -518,23 +546,23 @@ So what should our `handleInputChange` method look like? Let's begin with what w
 
 ```js
 handleInputChange = event => {
-  // we need the name and value from the input, the event target
-  const { name, value } = event.target;
+	// we need the name and value from the input, the event target
+	const { name, value } = event.target;
 
-  // we need to set state by using current state so we use the setState callback
-  this.setState(currentState => {
-    // we current state fields to merge with the new value
-    const { fields } = currentState;
+	// we need to set state by using current state so we use the setState callback
+	this.setState(currentState => {
+		// we current state fields to merge with the new value
+		const { fields } = currentState;
 
-    // we need to copy current fields into a new object so as not to directly mutate it
-    // we can use the spread operator as a shorthand since all the field properties are primitives
-    const updatedFields = { ...fields };
+		// we need to copy current fields into a new object so as not to directly mutate it
+		// we can use the spread operator as a shorthand since all the field properties are primitives
+		const updatedFields = { ...fields };
 
-    // ? update the value in fields for the current input's name
+		// ? update the value in fields for the current input's name
 
-    // return the updated state of fields
-    return { fields: updatedFields };
-  });
+		// return the updated state of fields
+		return { fields: updatedFields };
+	});
 };
 ```
 
@@ -555,25 +583,25 @@ Our `name` from the input target is a variable - it will vary depending on which
 
 ```js
 handleInputChange = event => {
-  // we need the name and value from the input, the event target
-  const { name, value } = event.target;
+	// we need the name and value from the input, the event target
+	const { name, value } = event.target;
 
-  // we need to set state by using current state so we use the setState callback
-  this.setState(currentState => {
-    // we current state fields to merge with the new value
-    const { fields } = currentState;
+	// we need to set state by using current state so we use the setState callback
+	this.setState(currentState => {
+		// we current state fields to merge with the new value
+		const { fields } = currentState;
 
-    // we need to copy current fields into a new object
-    // it is a best practice to never mutate function arguments (currentState) directly
-    // we can use the spread operator as a shorthand since all the field properties are primitives
-    const updatedFields = { ...fields };
+		// we need to copy current fields into a new object
+		// it is a best practice to never mutate function arguments (currentState) directly
+		// we can use the spread operator as a shorthand since all the field properties are primitives
+		const updatedFields = { ...fields };
 
-    // set the new value dynamically using the name variable
-    updatedFields[name] = value;
+		// set the new value dynamically using the name variable
+		updatedFields[name] = value;
 
-    // return the updated state of fields
-    return { fields: updatedFields };
-  });
+		// return the updated state of fields
+		return { fields: updatedFields };
+	});
 };
 ```
 
@@ -581,23 +609,23 @@ Now our `handleInputChange` can handle input changes from 1 to a million inputs 
 
 ```js
 handleInputChange = event => {
-  const { name, value } = event.target;
+	const { name, value } = event.target;
 
-  this.setState(currentState => {
-    const fields = { ...currentState.fields, [name]: value };
-    // same as
-    // const fields = { ...currentState.fields };
-    // fields[name] = value;
+	this.setState(currentState => {
+		const fields = { ...currentState.fields, [name]: value };
+		// same as
+		// const fields = { ...currentState.fields };
+		// fields[name] = value;
 
-    // if you are setting a property in an object with the same name
-    // you do not need to write { fields: fields }, thanks ES6!
-    return { fields };
-  });
+		// if you are setting a property in an object with the same name
+		// you do not need to write { fields: fields }, thanks ES6!
+		return { fields };
+	});
 };
 
 // or if you really want to push it by sacrificing readability
 handleInputChange = ({ target: { name, value } }) =>
-  this.setState(state => ({ fields: { ...state.fields, [name]: value } }));
+	this.setState(state => ({ fields: { ...state.fields, [name]: value } }));
 ```
 
 ### Multi-Input Form Validation
@@ -616,25 +644,25 @@ We will use the "flag and loop" approach for this function. Our flag will be the
 
 ```js
 const shouldDisable = fields => {
-  // disabled flag, notice we use "let"
-  // this is to allow the variable to be re-assigned in the loop
-  let disabled = false;
+	// disabled flag, notice we use "let"
+	// this is to allow the variable to be re-assigned in the loop
+	let disabled = false;
 
-  for (const [fieldName, value] of Object.entries(fields)) {
-    // validate the value according to the field name
-  }
+	for (const [fieldName, value] of Object.entries(fields)) {
+		// validate the value according to the field name
+	}
 
-  return disabled;
+	return disabled;
 };
 
 // if the in-line array destructuring confuses you remember it is the same as
 for (const entry of Object.entries(fields)) {
-  // array destructuring or "unpacking"
-  const [fieldName, value] = entry;
+	// array destructuring or "unpacking"
+	const [fieldName, value] = entry;
 
-  // or more imperatively
-  const fieldName = entry[0];
-  const value = entry[1];
+	// or more imperatively
+	const fieldName = entry[0];
+	const value = entry[1];
 }
 ```
 
@@ -644,23 +672,23 @@ Notice that we provide no mechanism for the `disabled` flag to ever be set `fals
 
 ```js
 const shouldDisable = fields => {
-  // disabled flag, notice we use "let"
-  // this is to allow the variable to be re-assigned in the loop
-  let disabled = false;
+	// disabled flag, notice we use "let"
+	// this is to allow the variable to be re-assigned in the loop
+	let disabled = false;
 
-  for (const [fieldName, value] of Object.entries(fields)) {
-    if (fieldName === "name") {
-      // name field less than 3 or greater than 15 characters should disable
-      if (value.length < 3 || value.length > 15) {
-        disabled = true;
-      }
-      // other fields that are empty strings should disable
-    } else if (value === "") {
-      disabled = true;
-    }
-  }
+	for (const [fieldName, value] of Object.entries(fields)) {
+		if (fieldName === "name") {
+			// name field less than 3 or greater than 15 characters should disable
+			if (value.length < 3 || value.length > 15) {
+				disabled = true;
+			}
+			// other fields that are empty strings should disable
+		} else if (value === "") {
+			disabled = true;
+		}
+	}
 
-  return disabled;
+	return disabled;
 };
 ```
 
@@ -668,53 +696,53 @@ This looks pretty hairy. Let's see how it could be rewritten using a `switch` st
 
 ```js
 const shouldDisable = fields => {
-  let disabled = false;
+	let disabled = false;
 
-  for (const [fieldName, value] of Object.entries(fields)) {
-    switch (fieldName) {
-      case "name":
-        if (value.length < 3 || value.length > 15) {
-          disabled = true;
-        }
-        break;
-      // these fields fall through but should be added for readability and extendability
-      case "description":
-      case "categoryID":
-      default:
-        if (value === "") {
-          disabled = true;
-        }
-    }
-  }
+	for (const [fieldName, value] of Object.entries(fields)) {
+		switch (fieldName) {
+			case "name":
+				if (value.length < 3 || value.length > 15) {
+					disabled = true;
+				}
+				break;
+			// these fields fall through but should be added for readability and extendability
+			case "description":
+			case "categoryID":
+			default:
+				if (value === "") {
+					disabled = true;
+				}
+		}
+	}
 
-  return disabled;
+	return disabled;
 };
 
 // or more declaratively using a validator function
 
 const shouldDisable = fields => {
-  let disabled = false;
+	let disabled = false;
 
-  for (const [fieldName, value] of Object.entries(fields)) {
-    if (isFieldInvalid(fieldName, value)) {
-      disabled = true;
-    }
-  }
+	for (const [fieldName, value] of Object.entries(fields)) {
+		if (isFieldInvalid(fieldName, value)) {
+			disabled = true;
+		}
+	}
 
-  return disabled;
+	return disabled;
 };
 
 const isFieldInvalid = (fieldName, value) => {
-  // we can utilize the "return" exit strategy of a function
-  // this leads to cleaner looking code
-  switch (fieldName) {
-    case "name":
-      return value.length < 3 || value.length > 15;
-    case "description":
-    case "categoryID":
-    default:
-      return value === "";
-  }
+	// we can utilize the "return" exit strategy of a function
+	// this leads to cleaner looking code
+	switch (fieldName) {
+		case "name":
+			return value.length < 3 || value.length > 15;
+		case "description":
+		case "categoryID":
+		default:
+			return value === "";
+	}
 };
 ```
 
@@ -808,23 +836,22 @@ class CheeseForm extends Component {
           <Form.Group as={Col}>
             <Form.Label>Cheese Description</Form.Label>
             <Form.Control
-              required
               name='description'
-              value={description}
-              onChange={this.handleInputChange}
+              // TODO: complete the props for this component
             />
           </Form.Group>
         </Form.Row>
 
         <Form.Row>
-          <Button
-            type='submit'
-            variant='primary'
-            disabled={disabled}
-            onClick={this.handleSubmit}
-          >
-            Create Cheese
-          </Button>
+          <Col>
+            <Button
+              type='submit'
+              variant='primary'
+              // TODO: complete the props for this component
+            >
+              Create Cheese
+            </Button>
+          </Col>
         </Form.Row>
       </Form>
     );
@@ -854,7 +881,7 @@ Conditional rendering is an approach used to make React components more dynamic.
 
 One thing you may not have known is what happens when React receives a falsy (`false`, `null`, `undefined`, etc.) value. The falsy value can occur either by directly returning (from the function or `render()` method) but also within a JSX expression block. When React receives a falsy value in either of these locations it thinks of this as a "do not render" instruction.
 
-Let's explore what happens when a JSX expression `{}` block has a falsy value in it. This knowledge is more immediately useful for us right now. Afterwards we can explore conditional rendering from function / `render()` returns.
+Let's explore what happens when a JSX expression `{}` block has a falsy value in it. This knowledge is more immediately useful for us right now. Later, in the Menus View section, we will explore conditional rendering from function / `render()` returns.
 
 ### Conditional JSX Rendering
 
@@ -862,8 +889,8 @@ Remember the short circuit expression from earlier in this guide? We used it for
 
 ```js
 <CheesesList
-  cheeses={cheeses}
-  removeCheese={selectedCategoryID === "" && this.deleteCheese}
+	cheeses={cheeses}
+	removeCheese={selectedCategoryID === "" && this.deleteCheese}
 />
 ```
 
@@ -893,9 +920,9 @@ So how will this JSX expression block be evaluated? If the `removeCheese` handle
 
 If the `removeCheese` prop is provided as `false` (from short circuiting in the conditional prop expression of the Parent) then the JSX expression block will also short circuit. This means the expression will return `false` (the value of `removeCheese`). React will see `{false}` in the JSX and determine that this block should not be rendered.
 
-If you are interested in learning about a more advanced topic in conditional Component rendering read the next section. If not scroll past it and get to implementing the `<CheesesList>` with your newfound knowledge!
+If you are interested in learning about a more advanced topic in conditional Component rendering read the next section. If not scroll past it and [get to implementing](#Implementation) the `<CheesesList>` with your newfound knowledge!
 
-### Conditional Component Render
+### Conditional Component Rendering
 
 Conditional rendering outside of JSX blocks is a useful pattern to learn in React. With this approach we can make more dynamic components that render according to information from their props or state. We will explore one common scenario with network requests below. Note that this pattern can be applied to any component that should behave dynamically with respect to its rendering behavior.
 
