@@ -403,7 +403,7 @@ Using an ELB requires two subnets across different availability zones
 - select your load balancer
 - [NOTE] the DNS name
 
-continue to [Cheese SPA Deployment](./cheese-spa-deployment.md)
+continue to [Cheese SPA Deployment](./6-spa-deployment.md)
 
     
 
