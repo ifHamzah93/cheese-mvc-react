@@ -38,7 +38,7 @@ The Cheese API is a "RESTful-ish" API. Meaning that while it adheres to the reso
     - `GET`: get the cheese details
       - response: `CheeseEntity`
     - `DELETE`: delete the cheese
-      - response status: `200` (typically `204`)
+      - response status: `200` (should be `204`)
   - cheeses collection by category: `/cheeses/category/:categoryID`
     - `GET`: get all the cheeses for the category
       - response: `[CheeseEntity]`
@@ -67,4 +67,4 @@ The Cheese API is a "RESTful-ish" API. Meaning that while it adheres to the reso
       - response status: `201`
     - `DELETE`: remove a cheese from the menu
       - request data: `{ cheeseID }`
-      - response status: `200` (typically `204`)
+      - response status: `201` (should be `204`)
