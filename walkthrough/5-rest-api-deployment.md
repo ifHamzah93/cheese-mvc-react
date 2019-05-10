@@ -336,7 +336,7 @@ As long as future API deployments use the same database credentials you only nee
     - check for `cheese_api` database 
         - > `show databases;`
         - if you do not see `cheese_api` in the list
-            - > `create database cheese_api`
+            - > `create database cheese_api;`
     - create user account
         - > `create user 'cheese_api'@'%' identified by 'cheese_api';`  
     - grant privileges to user
