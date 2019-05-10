@@ -15,10 +15,10 @@
   - `<Footer>`
 
 ## Shortcut
-Depending on how much time is available to complete this project you can take a shortcut through the config process by cloning this repo and using the starter code in the `code/` directory. 
+Depending on how much time is available to complete this project you can take a shortcut through the config process by forking this repo and using the starter code in the `code/` directory. 
 
 ```sh
-git clone https://github.com/the-vampiire/cheese-mvc-react
+git clone https://github.com/<your-username>/cheese-mvc-react
 ```
 
 This will provide starter code up to the Navigation and Footer section. Explore the starter code files. If the code is clear to you then you can skip to [Navigation and Footer](#Navigation-and-Footer). Otherwise read through starting at the following section.
@@ -245,14 +245,15 @@ Here is the starter code for this section:
 ```js
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import NavBar from "react-bootstrap/NavBar";
+import NavBar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 
 const CheeseNav = () => (
   <NavBar>
     <Nav>
-      <LinkContainer to="/some/path/to/navigate">
-        <Nav.Link>User Facing Link Text</Nav.Link>
+      {/* exact prop means "exact match" since all other subpaths match "/" */}
+      <LinkContainer exact to="/">
+        <Nav.Link>Home</Nav.Link>
       </LinkContainer>
       {/* TODO: implement the links */}
     </Nav>
@@ -277,7 +278,7 @@ const Footer = () => (
   <footer className="fixed-bottom">
     <Row className="text-center">
       <Col xs={12}>
-        Coded by
+        Coded by&nbsp;
         <a
           target="_blank"
           rel="noopener noreferrer"
