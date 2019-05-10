@@ -47,7 +47,7 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
 - services > VPC
 - click [start VPC wizard] button
 - step 1
-    - VPC with a Singule Public Subnet
+    - VPC with a Single Public Subnet
 - step 2 (leave defaults unless listed below)
     - VPC name: `<your-name>-API-VPC`
     - availability zone: `us-east-1a`
@@ -109,6 +109,8 @@ First we will create the RDS subnet group
 - click [create] button   
 
 ## Create RDS Instance
+you may have a view that is split into 3 sections or one giant section. it's the same information just split into 3 sections.
+
 - services > RDS
 - click [create database] button
 - create database view (all defaults unless listed below)
@@ -121,7 +123,7 @@ First we will create the RDS subnet group
         - master username: `cheese`
         - uncheck auto generate password
         - master password: `cheese-api`
-- connectivity 
+- connectivity (might be named Network & Security)
     - VPC: choose your VPC 
     - expand additional connectivity configuration
         - subnet group: select your subnet group

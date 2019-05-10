@@ -26,7 +26,7 @@
         - otherwise you will get a CORS error because our Netlify site is served over `https` but our API is not
 - add `_redirects` file to `public/` directory in your project
 
-`src/public/_redirects` (no file extension)
+`public/_redirects` (no file extension)
 
 ```sh
 /* /index.html 200
