@@ -2,7 +2,7 @@
 
 ## [Walkthrough](./walkthrough)
 
-## [Final Code](/../../tree/final-code/code)
+## [Final Code](/../../tree/code-walkthrough-4/code)
 
 © 2019 Vampiire Codes
 
