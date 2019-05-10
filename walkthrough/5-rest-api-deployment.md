@@ -1,5 +1,9 @@
-# Cheese REST API Deployment
+## Adaptated from LaunchCode DevOps Curriculum
+This walkthrough document has been adapted from the [LaunchCode DevOps Week5 / Day 2 - AWS deployment](https://education.launchcode.org/gis-devops/studios/aws-rds-vpc/index.html#studio-aws-rds-vpc) curriculum. All credit for the original research and development of this deployment walkthrough goes to the LaunchCode curriculum development team. 
 
+The Java/Spring Cheese API referenced for use in this deployment can be found at the repo of its author, Blake Mills, [welzie/cheese-mvc "adding-rest" branch](https://github.com/welzie/cheese-mvc/tree/adding-rest). 
+
+# Cheese REST API Deployment
 The first step is to create our VPC. This is the "containment" area where we encapsulate the services we need for the deployment:
 
 - ELB: elastic load balancer
