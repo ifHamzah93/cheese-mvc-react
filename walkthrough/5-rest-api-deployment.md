@@ -183,6 +183,7 @@ You may already have this role in place check:
 - [Create Policy]: create a new policy for accessing your bucket
 	- only allows EC2 instances `read` permission on your specific S3 bucket
 - click the [JSON] tab
+- delete everything in the JSON tab
 - edit and paste the JSON below
 	- replace your bucket name under `Resource` field
 - click [review policy] button
@@ -236,7 +237,7 @@ You may already have this role in place check:
     - expand advanced details
 - go back to the RDS tab you left open
 - go to connectivity & security section
-        - [NOTE] the endpoint of your RDS 
+    - [NOTE] the endpoint of your RDS 
 - scroll down to the security groups section
 - click the security group with type `CIDR/IP-Inbound`
 - opens a new tab
@@ -254,6 +255,7 @@ You may already have this role in place check:
     - modify and paste the script below
 
 user script - input your values replacing anything with `<YOUR-X>`
+
 - `<YOUR-BUCKET-NAME>`
 - `<YOUR-DB-ENDPOINT>`
 - DO NOT
@@ -313,12 +315,23 @@ systemctl enable cheese-api.service
     - value: `<your-name>-cheese-api`
 - step 6: configure security groups
     - create new security group
-    - name: `<your-name>-cheese-api-ssh`
-    - description: `SSH for <your-name> cheese API`
-    - change source to `My IP`
+    - name: `<your-name>-cheese-api`
+    - description: `SSH and load balancer access`
+- under rules
+    - type: `SSH`
+        - source -> [Custom] -> my IP  
+    - click [add rule]
+    - type: `custom TCP`
+        - port range: `8080` (the port our API listens on in the instance)
+        - source -> [Custom] -> `10.0.0.0/16` (our VPC block)  
 - review and launch
     - choose your SSH key
-    - launch
+        - DOUBLE CHECK that you have this key on your machine
+        - terminal: `ls ~/.ssh` and see if the key is there
+        - confirm checkbox 
+- launch
+    - click the link in the green box to take you to your instances
+    -  
 
 # Configure DB
 As long as future API deployments use the same database credentials you only need to do this step once. 
@@ -329,6 +342,11 @@ As long as future API deployments use the same database credentials you only nee
 - [NOTE] your public IP address
 
 ## SSH Into Instance
+- MAKE SURE your instance
+    - instance state: `running`
+    - status checks: `2/2` just NOT `initializing`
+        - if it's initializing then wait until it's done
+        - this is running our user scripts we don't want to mess with it until it's done
 - terminal: `ssh -i ~/.ssh/<your-key-name>.pem ubuntu@<your-public-IP>`
 - [yes] add to hosts
 
@@ -338,7 +356,7 @@ As long as future API deployments use the same database credentials you only nee
     - check for `cheese_api` database 
         - > `show databases;`
         - if you do not see `cheese_api` in the list
-            - > `create database cheese_api;`
+            - > `create database cheese_api`
     - create user account
         - > `create user 'cheese_api'@'%' identified by 'cheese_api';`  
     - grant privileges to user
@@ -348,10 +366,21 @@ As long as future API deployments use the same database credentials you only nee
     - quit
         - > `\q`
 
+## Start the Service
+- terminal:
+    - > `sudo systemctl start cheese-api.service`
+    - wait a few seconds for it to start up
+    - > `telnet localhost 8080`
+        - you should see `Connected to localhost.`
+        - this means everything went well!  
+- exit from the SSH connection
+    - terminal: `exit` 
+
 # Create the ELB
 
 ## Create Public Subnet
 Using an ELB requires two subnets across different availability zones
+
 - services > VPC
 - sidebar -> subnets
 - click [create subnet] button
@@ -359,7 +388,7 @@ Using an ELB requires two subnets across different availability zones
     - name tag: `<your-name>-public-subnet-2`
     - vpc: select your VPC
     - availability zone: `us-east-1b`
-        - MUST BE a different AZ then your `-public-subnet-1` check your [NOTE]s
+        - MUST BE a different AZ then your `-public-subnet-1` check your [NOTE]s for the `vpc availability zone` you selected initially
         - IPv4 CIDR block: `10.0.3.0/24`
 - create subnet
 - go to subnets
@@ -405,7 +434,7 @@ Using an ELB requires two subnets across different availability zones
 - select your load balancer
 - [NOTE] the DNS name
 
-continue to [Cheese SPA Deployment](./6-spa-deployment.md)
+continue to [Cheese SPA Deployment](./cheese-spa-deployment.md)
 
     
 
