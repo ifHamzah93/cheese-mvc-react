@@ -7,25 +7,28 @@ The Cheese API is a "RESTful-ish" API. Meaning that while it adheres to the reso
 // CheeseEntity
 {
   id: Number;
-  name: String;
-  description: String;
-  category: CategoryEntity;
+  name: String
+  description: String
+  category: CategoryEntity
 }
 
 // CategoryEntity
 {
-  id: Number;
-  name: String;
+  id: Number
+  name: String
 }
 
 // MenuEntity
 {
-  id: Number;
-  name: String;
+  id: Number
+  name: String
+  cheeses: [CheeseEntity]
 }
 ```
 
 ## Endpoint reference
+
+Any endpoint that has a `:name` subpath indicates that it is a _variable path_`. This means you should put in a value for this subpath when making a request. For example if you were requesting a specific cheese at `/cheeses/:cheeseID` and the cheese you wanted had an ID of 5 then your request would be for `GET cheeses/5`.
 
 - Cheese
   - cheeses collection: `/cheeses/`
@@ -66,5 +69,5 @@ The Cheese API is a "RESTful-ish" API. Meaning that while it adheres to the reso
       - request data: `{ cheeseID }`
       - response status: `201`
     - `DELETE`: remove a cheese from the menu
-      - request data: `{ cheeseID }`
+      - endpoint: `/menus/:menuID/cheeses/:cheeseID`
       - response status: `201` (should be `204`)
