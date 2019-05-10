@@ -69,5 +69,5 @@ Any endpoint that has a `:name` subpath indicates that it is a _variable path_`.
       - request data: `{ cheeseID }`
       - response status: `201`
     - `DELETE`: remove a cheese from the menu
-      - request data: `{ cheeseID }`
+      - endpoint: `/menus/:menuID/cheeses/:cheeseID`
       - response status: `201` (should be `204`)
